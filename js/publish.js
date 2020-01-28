@@ -239,6 +239,8 @@ function selectorStart()
     video: {deviceId: videoSource ? {exact: videoSource} : undefined, width: {exact: videoWidth}, height: {exact: videoHeight}},
   };
   
+  navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia );
+    
  
     if(navigator.mediaDevices.getUserMedia)
 	{
@@ -359,8 +361,6 @@ function wsConnect(url)
 				peerConnection.addTrack(localTracks[localTrack], localStream);
 			}
             */
-           wsConnection.stream = localStream;
-           wsConnection.emit('sent-message', wsConnection.stream);
 		}
 		else
 		{
@@ -369,6 +369,10 @@ function wsConnect(url)
 
 		//peerConnection.createOffer(gotDescription, errorHandler, offerOptions);
 		peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
+		
+		console.log('emit stream: : ' + localStream);
+		console.log('emit stream: : ' + localVideo);
+		wsConnection.emit('stream', localStream);
 
 
 	});

@@ -16,7 +16,31 @@ io.on('connection', client => {
     client.on('sent-message', function (message) {
         io.sockets.emit('new-message', message)
     })
+
+    client.on('stream',function(streamingData){
+        console.log('user stream:' + streamingData)
+        client.broadcast.emit('stream',streamingData);  
+    });
+
+    // client.on('streamStart',function (stream) {
+    //     io.stream = stream;
+    //     io.emit('echo', io.stream + '<br />');
+    //     var proc = new ffmpeg({source: io.stream})
+    //         .withAspect('4:3')
+    //         .withSize('640x480')
+    //         .videoCodec('libx264')
+    //         .audioCodec('libmp3lame')
+    //         .applyAutopadding(true, 'white')
+    //         .saveToFile('out.mp4', function(retcode, error){
+    //             io.emit('echo', 'file has been converted succesfully <br />');
+    //         });
+    // })
 })
+
+io.of('/stream').clients((error, clients) => {
+if (error) throw error;
+    console.log(clients);
+});
 
 httpServer.listen(port, () => {
     console.log('Starting Websocker Server on http://localhost:' + port);

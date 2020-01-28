@@ -4,7 +4,7 @@
 <head>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/adapter.js"></script>
-    <script src="js/publish.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
     <style>
     .div-section {
         margin-bottom: 8px;
@@ -13,62 +13,68 @@
 </head>
 
 <body>
-    <div class="div-section"> WebRTC - Publish Stream</div>
+        <video src="" id="video" style="width:100%; height: 100%;" autoplay="true"></video>
+            </br>
+        <canvas style="display:none;" id="preview"></canvas>
+        
+        <div id="log"></div>
+        <script type="text/javascript">
+            var canvas = document.getElementById("preview");
+            var context = canvas.getContext('2d');
+        
+            canvas.width = 900;
+            canvas.height = 700;
+        
+            context.width = canvas.width;
+            context.height = canvas.height;
+        
+            var video = document.getElementById("video");
+        
+            var socket = io('ws://localhost:9000');
+        
+            function logger(msg){
+                $('#log').text(msg);
+            }
+        
+            function loadCamera(stream){
+              try {
+                  video.srcObject = stream;
+              } 
+              
+              catch (error) {
+               video.src = URL.createObjectURL(stream);
+              }
+               logger("Camera connected");
+            }
+        
+            function loadFail(){
+                logger("Camera not connected");
+            }
+        
+            function Draw(video,context){
+                context.drawImage(video,0,0,context.width,context.height);
+                socket.emit('stream',canvas.toDataURL('image/webp'));
+            }
+        
+            $(function(){
+                navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia );
+            
+                if(navigator.getUserMedia)
+                {
+                    navigator.getUserMedia({
+                        video: true, 
+                        audio: false
+                    },loadCamera,loadFail);
+                }
+        
+                setInterval(function(){
+                    Draw(video,context);
+                },0.1);
+            });
+        
+        </script>
 
-    <div class="videowhisper-webrtc-camera">
-        <video id="localVideo" class="videowhisper_htmlvideo" autoplay playsinline muted
-            style="widht:640px;height:480px;"></video>
-    </div>
+    </body>
 
-    <div class="ui segment form">
-        <span id="sdpDataTag">Connecting...</span>
-
-        <hr class="divider" />
-
-        <div class="field inline">
-            <label for="videoSource">Video Source </label><select class="ui dropdown" id="videoSource"></select>
-        </div>
-
-        <div class="field inline">
-            <label for="videoResolution">Video Resolution </label><select class="ui dropdown"
-                id="videoResolution"></select>
-        </div>
-
-        <div class="field inline">
-            <label for="audioSource">Audio Source </label><select class="ui dropdown" id="audioSource"></select>
-        </div>
-
-    </div>
-
-    <div class="div-section">
-        <a target="_blank" href="play.php">WebRTC Playback</a> HTML5 playback
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-    
-	<script type="text/javascript">
-	var socket = io('http://localhost:9000');
-    var userAgent = navigator.userAgent;
-    var wsURL = "http://localhost:9000";
-    var streamInfo = {
-        applicationName: "xxx",
-        streamName: "aa",
-        sessionId: "[empty]"
-    };
-    var userData = {
-        param1: "value1",
-        "param2" : "webrtc-broadcast"
-    };
-    var videoBitrate = 600;
-    var audioBitrate = 64;
-    var videoFrameRate = "29.97";
-    var videoChoice = "42e01f";
-    var audioChoice = "opus";
-
-    jQuery(document).ready(function() {
-        setTimeout(browserReady(), 2000);
-    });
-    </script>
-
-</body>
 
 </html>
