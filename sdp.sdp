@@ -1,0 +1,110 @@
+v=0
+o=- 4413973031797128043 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+a=group:BUNDLE 0 1
+a=msid-semantic: WMS zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=rtcp:9 IN IP4 0.0.0.0
+a=ice-ufrag:0E9a
+a=ice-pwd:kmjeDtMV5BlxpsVLN7gzbOJl
+a=ice-options:trickle
+a=fingerprint:sha-256 4C:F4:22:57:81:30:91:2A:2E:81:AB:9D:B2:0A:CF:F6:E1:47:9F:5C:5F:9A:D5:A3:F0:9E:E2:3D:46:DB:F1:95
+a=setup:actpass
+a=mid:0
+a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:5 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:6 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+a=sendrecv
+a=msid:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9 f706114d-4fab-4959-9004-9062dc7d5feb
+a=rtcp-mux
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 x-google-min-bitrate=64;x-google-max-bitrate=64
+a=rtcp-fb:111 transport-cc
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 x-google-min-bitrate=64;x-google-max-bitrate=64
+a=rtcp-fb:111 transport-cc
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 x-google-min-bitrate=64;x-google-max-bitrate=64
+a=rtcp-fb:111 transport-cc
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 x-google-min-bitrate=64;x-google-max-bitrate=64
+a=rtcp-fb:111 transport-cc
+a=fmtp:111 minptime=10;useinbandfec=1
+a=ssrc:2989087970 cname:W6Y6RvKNnPAKEeQK
+a=ssrc:2989087970 msid:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9 f706114d-4fab-4959-9004-9062dc7d5feb
+a=ssrc:2989087970 mslabel:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9
+a=ssrc:2989087970 label:f706114d-4fab-4959-9004-9062dc7d5feb
+m=video 9 UDP/TLS/RTP/SAVPF 108
+c=IN IP4 0.0.0.0
+a=rtcp:9 IN IP4 0.0.0.0
+a=ice-ufrag:0E9a
+a=ice-pwd:kmjeDtMV5BlxpsVLN7gzbOJl
+a=ice-options:trickle
+a=fingerprint:sha-256 4C:F4:22:57:81:30:91:2A:2E:81:AB:9D:B2:0A:CF:F6:E1:47:9F:5C:5F:9A:D5:A3:F0:9E:E2:3D:46:DB:F1:95
+a=setup:actpass
+a=mid:1
+a=extmap:14 urn:ietf:params:rtp-hdrext:toffset
+a=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=extmap:13 urn:3gpp:video-orientation
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:12 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay
+a=extmap:11 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type
+a=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing
+a=extmap:8 http://tools.ietf.org/html/draft-ietf-avtext-framemarking-07
+a=extmap:9 http://www.webrtc.org/experiments/rtp-hdrext/color-space
+a=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:5 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:6 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+a=sendrecv
+a=msid:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9 73b2065d-ea93-44b6-a89f-a5ea6007c843
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:108 H264/90000
+a=fmtp:108 x-google-min-bitrate=600;x-google-max-bitrate=600
+a=rtcp-fb:108 goog-remb
+a=rtcp-fb:108 transport-cc
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack
+a=rtcp-fb:108 nack pli
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtpmap:108 H264/90000
+a=fmtp:108 x-google-min-bitrate=600;x-google-max-bitrate=600
+a=rtcp-fb:108 goog-remb
+a=rtcp-fb:108 transport-cc
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack
+a=rtcp-fb:108 nack pli
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtpmap:108 H264/90000
+a=fmtp:108 x-google-min-bitrate=600;x-google-max-bitrate=600
+a=rtcp-fb:108 goog-remb
+a=rtcp-fb:108 transport-cc
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack
+a=rtcp-fb:108 nack pli
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtpmap:108 H264/90000
+a=fmtp:108 x-google-min-bitrate=600;x-google-max-bitrate=600
+a=rtcp-fb:108 goog-remb
+a=rtcp-fb:108 transport-cc
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack
+a=rtcp-fb:108 nack pli
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=ssrc-group:FID 479736386 2202511364
+a=ssrc:479736386 cname:W6Y6RvKNnPAKEeQK
+a=ssrc:479736386 msid:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9 73b2065d-ea93-44b6-a89f-a5ea6007c843
+a=ssrc:479736386 mslabel:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9
+a=ssrc:479736386 label:73b2065d-ea93-44b6-a89f-a5ea6007c843
+a=ssrc:2202511364 cname:W6Y6RvKNnPAKEeQK
+a=ssrc:2202511364 msid:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9 73b2065d-ea93-44b6-a89f-a5ea6007c843
+a=ssrc:2202511364 mslabel:zNLJ9G6ws0kNGSSdnCuzYhJogP82A8wvAHt9
+a=ssrc:2202511364 label:73b2065d-ea93-44b6-a89f-a5ea6007c843

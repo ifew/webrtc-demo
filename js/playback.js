@@ -53,10 +53,11 @@ remoteVideo.addEventListener('resize', () => {
 
 function wsConnect(url)
 {	
-	wsConnection = io(url);
+	wsConnection = new WebSocket(url);
 	wsConnection.binaryType = 'arraybuffer';
 	
-	wsConnection.on('connect', function() {
+	wsConnection.onopen = function()
+	{
 		retrying = false; //success
 		
 		console.log("wsConnection.onopen");
@@ -89,7 +90,7 @@ function wsConnect(url)
 
 		sendPlayGetOffer();
 	
-	})
+	}
 	
 function stateCallback2() {
   let state;
@@ -150,7 +151,8 @@ function onIceStateChange(pc, event) {
 	}
 
 
-	wsConnection.on('messages', function(evt) {
+	wsConnection.onmessage = function(evt)
+	{
 		console.log("wsConnection.onmessage: "+evt.data);
 		
 		var msgJSON = JSON.parse(evt.data);
@@ -221,18 +223,19 @@ function onIceStateChange(pc, event) {
 			wsConnection = null;
 		}
 
-	})
+	}
 	
-	wsConnection.on('close', function() {
+	wsConnection.onclose = function()
+	{
 		console.log("wsConnection.onclose");
-	})
-
-	wsConnection.on('error', function(evt) {
+	}
+	
+	wsConnection.onerror = function(evt)
+	{
 		console.log("wsConnection.onerror: "+JSON.stringify(evt));
-
+		
 		jQuery("#sdpDataTag").html('WebSocket connection failed: '+wsURL);
-		stopPublisher();
-	})
+	}
 }
 
 //
