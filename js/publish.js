@@ -127,6 +127,29 @@ function selectorChange() {
 	selectorStart();
 }
 
+
+
+
+/*
+function selectorsReady()
+{
+	//selectors
+	audioSelect = document.getElementById('audioSource'); 
+	videoSelect = document.getElementById('videoSource'); 
+
+	selectors = [audioSelect, videoSelect];
+	
+	navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+	
+	audioSelect.onchange = selectorStart;
+
+	videoSelect.onchange = selectorStart;
+
+	selectorStart();
+}
+*/
+
+
 function gotDevices(deviceInfos) {
 	// Handles being called several times to update labels. Preserve values.
 
@@ -194,9 +217,11 @@ function gotStream(stream) {
 	localStream = stream;
 
 	//close prev stream (to restart publishing)
+	console.log("gotStream: close prev stream ");
 	if (localStream != null) stopPublisher();
 
 	//publish
+	console.log("gotStream: start new stream ");
 	startPublisher();
 
 	// Refresh button list in case labels have become available
@@ -321,35 +346,38 @@ function wsConnect(url) {
 	}
 
 	wsConnection = io(url);
-	wsConnection.binaryType = 'arraybuffer';
+	//wsConnection.binaryType = 'arraybuffer';
 
-	wsConnection.on('connect', function () {
-		console.log("wsConnection.on");
+	wsConnection.on('connect', function() { 
+		console.log("wsConnection.onopen");
 
 		peerConnection = new RTCPeerConnection(peerConnectionConfig);
 		peerConnection.onicecandidate = gotIceCandidate;
 
-		peerConnection.onsignalingstatechange = stateCallback1; //stateCallback1
+		peerConnection.onsignalingstatechange = stateCallback1;
 		peerConnection.oniceconnectionstatechange = iceStateCallback1;
-
+		console.log("wsConnect get stream 1:" + localStream);
 
 		if (newAPI) {
 
 			localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
-			console.log('wsConnection.on Adding Local Stream to peer connection');
+			console.log('wsConnection.onopen Adding Local Stream to peer connection');
 
 		}
 		else {
 			peerConnection.addStream(localStream);
 		}
+		
+		wsConnection.emit('stream', localStream);
 
+		//send to remote video
+		var remoteVideo = document.querySelector('#remoteVideo');
+		remoteVideo.srcObject = localStream;
+
+		//peerConnection.createOffer(gotDescription, errorHandler, offerOptions);
 		peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
 
-		console.log('localStream: ' + localStream.getTracks());
-		wsConnection.emit('stream', localStream.gotStream);
-
 	});
-
 
 	function stateCallback1() {
 		console.log(`called stateCallback1`);
@@ -373,58 +401,58 @@ function wsConnect(url) {
 		}
 	}
 
-	wsConnection.on('message', function (evt) {
-		console.log("wsConnection.on message: " + evt.data);
 
-		var msgJSON = JSON.parse(evt.data);
+	// wsConnection.emit('stream', function(evt) {
+	// 	console.log("wsConnection.onmessage: " + evt);
 
-		var msgStatus = Number(msgJSON['status']);
-		var msgCommand = msgJSON['command'];
+	// 	var msgJSON = JSON.parse(evt);
 
-		if (msgStatus != 200) {
-			jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
-			stopPublisher();
-		}
-		else {
-			jQuery("#sdpDataTag").html("");
+	// 	var msgStatus = Number(msgJSON['status']);
+	// 	var msgCommand = msgJSON['command'];
 
-			var sdpData = msgJSON['sdp'];
-			if (sdpData !== undefined) {
-				console.log('sdp: ' + msgJSON['sdp']);
+	// 	if (msgStatus != 200) {
+	// 		jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
+	// 		stopPublisher();
+	// 	}
+	// 	else {
+	// 		jQuery("#sdpDataTag").html("");
 
-				peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
-					//peerConnection.createAnswer(gotDescription, errorHandler);
-				}, errorHandler);
-			}
+	// 		var sdpData = msgJSON['sdp'];
+	// 		if (sdpData !== undefined) {
+	// 			console.log('sdp: ' + msgJSON['sdp']);
 
-			var iceCandidates = msgJSON['iceCandidates'];
-			if (iceCandidates !== undefined) {
-				for (var index in iceCandidates) {
-					console.log('iceCandidates: ' + iceCandidates[index]);
+	// 			peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
+	// 				//peerConnection.createAnswer(gotDescription, errorHandler);
+	// 			}, errorHandler);
+	// 		}
 
-					//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
-					peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
+	// 		var iceCandidates = msgJSON['iceCandidates'];
+	// 		if (iceCandidates !== undefined) {
+	// 			for (var index in iceCandidates) {
+	// 				console.log('iceCandidates: ' + iceCandidates[index]);
 
-				}
-			}
-		}
+	// 				//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
+	// 				peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
 
-		if (wsConnection != null)
-			wsConnection.close();
-		wsConnection = null;
-	});
+	// 			}
+	// 		}
+	// 	}
 
-	wsConnection.on('close', function () {
+	// 	if (wsConnection != null)
+	// 		wsConnection.close();
+	// 	wsConnection = null;
+	// });
+
+	wsConnection.on('close', function() { 
 		console.log("wsConnection.onclose");
 	});
 
-	wsConnection.on('error', function (evt) {
+	wsConnection.on('error', function() { 
 		console.log("wsConnection.onerror: " + JSON.stringify(evt));
 
 		jQuery("#sdpDataTag").html('WebSocket connection failed: ' + wsURL);
 		stopPublisher();
 	});
-
 }
 
 function onAddIceCandidateSuccess() {
@@ -495,7 +523,7 @@ function gotDescription(description) {
 
 	peerConnection.setLocalDescription(description, function () {
 
-		wsConnection.send('{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
+		wsConnection.emit('message','{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
 
 	}, function () { console.log('set description error') });
 }
