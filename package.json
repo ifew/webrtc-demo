@@ -5,6 +5,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "child_process": "^1.0.2",
     "express": "^4.16.2",
     "recordrtc-socketio": "^1.0.6",
     "socket.io": "^2.0.4",
