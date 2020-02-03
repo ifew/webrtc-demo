@@ -12,7 +12,7 @@ var resolutionSelect = null;
 var localVideo = null;
 var remoteVideo = null;
 var peerConnection = null;
-var peerConnectionConfig = { 'iceServers': [] };
+var peerConnectionConfig = { iceServers: [{ url:'stun:stun.l.google.com:19302' }] };
 var localStream = null;
 var wsConnection = null;
 var videoIndex = -1;
@@ -112,7 +112,6 @@ function selectorsReady() {
 	resolutionSelect.selectedIndex = 4;
 
 	resolutionSelect.onchange = selectorChange;
-
 	selectorStart();
 
 }
@@ -134,13 +133,13 @@ function selectorChange() {
 function selectorsReady()
 {
 	//selectors
-	audioSelect = document.getElementById('audioSource'); 
-	videoSelect = document.getElementById('videoSource'); 
+	audioSelect = document.getElementById('audioSource');
+	videoSelect = document.getElementById('videoSource');
 
 	selectors = [audioSelect, videoSelect];
-	
+
 	navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
-	
+
 	audioSelect.onchange = selectorStart;
 
 	videoSelect.onchange = selectorStart;
@@ -348,7 +347,7 @@ function wsConnect(url) {
 	wsConnection = io(url);
 	//wsConnection.binaryType = 'arraybuffer';
 
-	wsConnection.on('connect', function() { 
+	wsConnection.on('connect', function() {
 		console.log("wsConnection.onopen");
 
 		peerConnection = new RTCPeerConnection(peerConnectionConfig);
@@ -367,8 +366,8 @@ function wsConnect(url) {
 		else {
 			peerConnection.addStream(localStream);
 		}
-		
-		wsConnection.emit('stream', localStream);
+
+			wsConnection.emit('stream', localStream, {name:"hello"});
 
 		//send to remote video
 		var remoteVideo = document.querySelector('#remoteVideo');
@@ -378,6 +377,15 @@ function wsConnect(url) {
 		peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
 
 	});
+
+	 const getFrame = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = localVideo.videoWidth;
+            canvas.height = localVideo.videoHeight;
+            canvas.getContext('2d').drawImage(localVideo, 0, 0);
+            const data = canvas.toDataURL('image/png');
+            return data;
+        }
 
 	function stateCallback1() {
 		console.log(`called stateCallback1`);
@@ -443,11 +451,11 @@ function wsConnect(url) {
 	// 	wsConnection = null;
 	// });
 
-	wsConnection.on('close', function() { 
+	wsConnection.on('close', function() {
 		console.log("wsConnection.onclose");
 	});
 
-	wsConnection.on('error', function() { 
+	wsConnection.on('error', function() {
 		console.log("wsConnection.onerror: " + JSON.stringify(evt));
 
 		jQuery("#sdpDataTag").html('WebSocket connection failed: ' + wsURL);
