@@ -50,6 +50,7 @@
 
         var userAgent = navigator.userAgent;
         var wsURL = "http://localhost:9000";
+        //var wsURL = "http://10.91.2.19:9000"
         var streamInfo = {
             applicationName: "xxx",
             streamName: "aa",
