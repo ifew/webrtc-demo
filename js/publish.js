@@ -402,46 +402,46 @@ function wsConnect(url) {
 	}
 
 
-	// wsConnection.emit('stream', function(evt) {
-	// 	console.log("wsConnection.onmessage: " + evt);
+	wsConnection.emit('stream_sdp', function(evt) {
+		console.log("wsConnection.onmessage: " + evt);
 
-	// 	var msgJSON = JSON.parse(evt);
+		var msgJSON = JSON.parse(evt);
 
-	// 	var msgStatus = Number(msgJSON['status']);
-	// 	var msgCommand = msgJSON['command'];
+		var msgStatus = Number(msgJSON['status']);
+		var msgCommand = msgJSON['command'];
 
-	// 	if (msgStatus != 200) {
-	// 		jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
-	// 		stopPublisher();
-	// 	}
-	// 	else {
-	// 		jQuery("#sdpDataTag").html("");
+		if (msgStatus != 200) {
+			jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
+			stopPublisher();
+		}
+		else {
+			jQuery("#sdpDataTag").html("");
 
-	// 		var sdpData = msgJSON['sdp'];
-	// 		if (sdpData !== undefined) {
-	// 			console.log('sdp: ' + msgJSON['sdp']);
+			var sdpData = msgJSON['sdp'];
+			if (sdpData !== undefined) {
+				console.log('sdp: ' + msgJSON['sdp']);
 
-	// 			peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
-	// 				//peerConnection.createAnswer(gotDescription, errorHandler);
-	// 			}, errorHandler);
-	// 		}
+				peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
+					//peerConnection.createAnswer(gotDescription, errorHandler);
+				}, errorHandler);
+			}
 
-	// 		var iceCandidates = msgJSON['iceCandidates'];
-	// 		if (iceCandidates !== undefined) {
-	// 			for (var index in iceCandidates) {
-	// 				console.log('iceCandidates: ' + iceCandidates[index]);
+			var iceCandidates = msgJSON['iceCandidates'];
+			if (iceCandidates !== undefined) {
+				for (var index in iceCandidates) {
+					console.log('iceCandidates: ' + iceCandidates[index]);
 
-	// 				//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
-	// 				peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
+					//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
+					peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
 
-	// 			}
-	// 		}
-	// 	}
+				}
+			}
+		}
 
-	// 	if (wsConnection != null)
-	// 		wsConnection.close();
-	// 	wsConnection = null;
-	// });
+		if (wsConnection != null)
+			wsConnection.close();
+		wsConnection = null;
+	});
 
 	wsConnection.on('close', function() { 
 		console.log("wsConnection.onclose");
