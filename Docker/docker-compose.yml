@@ -1,0 +1,14 @@
+version: '2'
+services:
+
+  webrtc_demo:
+    image: nginx_php:7.3
+    container_name: webrtc_demo
+    hostname: webrtc_demo
+    volumes:
+      - ../:/var/www/app
+    ports:
+      - 8899:80
+      - 33647:33647
+    dns:
+      - 8.8.8.8
