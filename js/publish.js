@@ -368,6 +368,7 @@ function wsConnect(url) {
 			peerConnection.addStream(localStream);
 		}
 		
+		console.log(typeof localStream);
 		wsConnection.emit('stream', localStream);
 
 		//send to remote video
