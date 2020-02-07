@@ -18,9 +18,7 @@
         <div><video id="localVideo" autoplay playsinline muted style="widht:640px;height:480px;"></video></div>
         <h2>Preview Screen</h2>
         <div><video id="remoteVideo" autoplay playsinline muted style="widht:640px;height:480px;"></video></div>
-        <h2>From Vimeo</h2>
-        <iframe src="https://vimeo.com/event/20653/embed" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-        
+
         <div class="ui segment form">
         <span id="sdpDataTag">Connecting...</span>
 
@@ -46,7 +44,7 @@
         var localVideoRaw = document.querySelector('#localVideo');
 
         var userAgent = navigator.userAgent;
-        var wsURL = "http://localhost:9000";
+        var wsURL = "ws://localhost:9000";
         //var wsURL = "http://10.91.2.19:9000"
         var streamInfo = {
             applicationName: "xxx",
