@@ -14,8 +14,7 @@ docker build -t nginx_php:7.3 .
 ### Build Container
 
 ```bash
-cd Docker
-sh build.sh
+docker run -d -i -p 80:80 -v ${PWD}:/var/www/app/ --net db_network --name webrtc_demo nginx_php:7.3
 ```
 
 
