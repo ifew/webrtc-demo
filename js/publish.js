@@ -408,6 +408,7 @@ function wsConnect(url) {
 			peerConnection.addStream(localStream);
 		}
 
+		//code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/www/index.html
 		//send to remote video on index.php
 		let mediaRecorder;
 		let mediaStream;
