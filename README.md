@@ -17,17 +17,26 @@ docker build -t nginx_php:7.3 .
 docker run -d -i -p 80:80 -v ${PWD}:/var/www/app/ --net db_network --name webrtc_demo nginx_php:7.3
 ```
 
-
 ### Installl Dependencies
 
 ```bash
 npm install
 ```
 
+### Config server.js
+```bash
+http://localhost/
+```
+
 ## RUN
 
-### Start Websocket Server
+### Start Socket.io Server
 ```bash
 node server
 ```
 
+
+### Open Browser for streaming
+```bash
+http://localhost/
+```
