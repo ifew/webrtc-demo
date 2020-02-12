@@ -1,5 +1,3 @@
-//VideoWhisper.com WebRTC implemetation
-
 //vars
 'use strict';
 
