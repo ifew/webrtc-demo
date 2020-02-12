@@ -2,7 +2,6 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const fs = require('fs');
 const httpServer = http.Server(app);
 const io = require('socket.io')(httpServer);
 const child_process = require('child_process');
@@ -16,11 +15,6 @@ io.on('connection', function (client) {
     console.log('user disconnected');
     ffmpeg.kill('SIGINT');
     client.emit('server_status', 'user disconnected');
-  });
-
-  client.on('echolog', function (data) {
-    var parseData = JSON.parse(data);
-    console.log('echo log:' +parseData);
   });
 
   const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/bfb51a2c-7f54-45c9-93b6-0ee9d4749922");
@@ -88,20 +82,6 @@ io.on('connection', function (client) {
 
 });
 
-// io.on('message', function (data) {
-//   console.log('got message data:' + data);
-//   var parseData = JSON.parse(data);
-
-//   var obj = {
-//     status: 200,
-//     command: 'command',
-//     statusDescription: "SDP test success",
-//     sdp: data,
-//     iceCandidates: []};
-
-//     io.emit(JSON.stringify(obj));
-// });
-
 httpServer.listen(port, () => {
-  console.log('Starting Websocker Server on http://localhost:' + port);
+  console.log('Starting Socket.io Server on http://localhost:' + port);
 });

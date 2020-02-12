@@ -13,11 +13,7 @@ var localVideo = null;
 var remoteVideo = null;
 var peerConnection = null;
 var peerConnectionConfig = { 
-	"iceServers": [],
-	"iceTransportPolicy": "all",
-	 "bundlePolicy": "balanced",
-	 "rtcpMuxPolicy": "require",
-	 "iceCandidatePoolSize": 0
+	"iceServers": []
  };
 var localStream = null;
 var wsConnection = null;
@@ -133,28 +129,6 @@ function selectorChange() {
 
 	selectorStart();
 }
-
-
-
-
-/*
-function selectorsReady()
-{
-	//selectors
-	audioSelect = document.getElementById('audioSource'); 
-	videoSelect = document.getElementById('videoSource'); 
-
-	selectors = [audioSelect, videoSelect];
-	
-	navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
-	
-	audioSelect.onchange = selectorStart;
-
-	videoSelect.onchange = selectorStart;
-
-	selectorStart();
-}
-*/
 
 
 function gotDevices(deviceInfos) {
@@ -408,24 +382,24 @@ function wsConnect(url) {
 			peerConnection.addStream(localStream);
 		}
 
-		//code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/www/index.html
-		//send to remote video on index.php
-		let mediaRecorder;
-		let mediaStream;
+		//send preview to remote video on index.php
 		var remoteVideo = document.querySelector('#remoteVideo');
 		remoteVideo.srcObject = localStream;
 
+		//code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/www/index.html
+		//record streaming to buffer
+		let mediaRecorder;
+		let mediaStream;
 		mediaStream = localVideo.captureStream(30); // 30 FPS
 		mediaRecorder = new MediaRecorder(mediaStream, {
 			mimeType: 'video/webm;codecs=h264',
-			videoBitsPerSecond : 1500000
+			videoBitsPerSecond : 1500000 //1.5Gbps
 		});
 		mediaRecorder.addEventListener('dataavailable', (e) => {
 			wsConnection.send(e.data);
 		});
-		mediaRecorder.start(3000); // Start recording, and dump data every second
+		mediaRecorder.start(3000); // Start recording, and dump data every 3 seconds
 
-		//peerConnection.createOffer(gotDescription, errorHandler, offerOptions);
 		try {
 			peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
 		} catch (e) {
@@ -532,9 +506,6 @@ function getUserMediaSuccess(stream) {
 }
 
 function startPublisher() {
-
-	console.log("startPublisher: wsURL:" + wsURL + " streamInfo:" + JSON.stringify(streamInfo));
-
 	wsConnect(wsURL);
 }
 
@@ -571,15 +542,11 @@ function gotDescription(description) {
 	if (videoBitrate !== undefined) enhanceData.videoBitrate = Number(videoBitrate);
 	if (videoFrameRate !== undefined) enhanceData.videoFrameRate = Number(videoFrameRate);
 
-	//console.log('gotDescription: original: ' + JSON.stringify({ 'sdp': description }));
-
 	description.sdp = enhanceSDP(description.sdp, enhanceData);
-
-	//console.log('gotDescription: enhanceSDP: ' + JSON.stringify({ 'sdp': description }));
 
 	peerConnection.setLocalDescription(description, function () {
 
-		wsConnection.send('{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
+		//wsConnection.send('{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
 
 	}, function () { console.log('set description error') });
 }
