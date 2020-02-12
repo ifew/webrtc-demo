@@ -1,4 +1,4 @@
-# Demo WebRTC publish to RTMP and play RTMP with HTML5
+# Demo WebRTC publish to RTMP (Youtube Live, Vimeo) via ffmpeg and buffer (not use SDP)
 
 ## Setup
 ### PHP 7.3 and Nginx
@@ -40,3 +40,7 @@ node server
 ```bash
 http://localhost/
 ```
+
+### Mixed from example
+- Fet buffer by node server https://github.com/fbsamples/Canvas-Streaming-Example/
+- WebRTC capture https://github.com/videowhisper/PHP-Live-Streaming-Webcam
