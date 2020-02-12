@@ -409,8 +409,20 @@ function wsConnect(url) {
 		}
 
 		//send to remote video on index.php
+		let mediaRecorder;
+		let mediaStream;
 		var remoteVideo = document.querySelector('#remoteVideo');
 		remoteVideo.srcObject = localStream;
+
+		mediaStream = localVideo.captureStream(30); // 30 FPS
+		mediaRecorder = new MediaRecorder(mediaStream, {
+			mimeType: 'video/webm;codecs=h264',
+			videoBitsPerSecond : 1500000
+		});
+		mediaRecorder.addEventListener('dataavailable', (e) => {
+			wsConnection.send(e.data);
+		});
+		mediaRecorder.start(3000); // Start recording, and dump data every second
 
 		//peerConnection.createOffer(gotDescription, errorHandler, offerOptions);
 		try {

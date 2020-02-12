@@ -36,10 +36,7 @@ app.get("/", (req, res) => {
 });
 
 io.set('transports', [
-  //'websocket',
   'polling', 'websocket'
-  // 'xhr-polling',
-  // 'jsonp-polling'
 ]);
 
 
