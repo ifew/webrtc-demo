@@ -17,7 +17,7 @@ io.on('connection', function (client) {
     client.emit('server_status', 'user disconnected');
   });
 
-  const rtmpUrl = decodeURIComponent("rtmp://x.rtmp.youtube.com/live2/g9hf-vxk2-4fbw-7jjy");
+  const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/bfb51a2c-7f54-45c9-93b6-0ee9d4749922");
   console.log('Target RTMP URL:', rtmpUrl);
 
   //code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/server.js

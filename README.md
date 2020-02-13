@@ -23,9 +23,9 @@ docker run -d -i -p 80:80 -v ${PWD}:/var/www/app/ --net db_network --name webrtc
 npm install
 ```
 
-### Config server.js
+### Config RTMP URL at server.js
 ```bash
-http://localhost/
+const rtmpUrl = decodeURIComponent("XXXXXXXXX");
 ```
 
 ## RUN
@@ -38,7 +38,7 @@ node server
 
 ### Open Browser for streaming
 ```bash
-http://localhost/
+http://localhost/index.html
 ```
 
 ### Mixed from example
