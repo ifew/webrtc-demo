@@ -393,9 +393,9 @@ function wsConnect(url) {
 			mimeType: 'video/webm;codecs=h264',
 			videoBitsPerSecond : 1500000 //1.5Gbps
 		});
-		mediaRecorder.addEventListener('dataavailable', (e) => {
+		mediaRecorder.ondataavailable = function(e){
 			wsConnection.send(e.data);
-		});
+		}
 		mediaRecorder.start(3000); // Start recording, and dump data every 3 seconds
 
 		try {
