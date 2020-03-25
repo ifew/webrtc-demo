@@ -4,11 +4,10 @@ const app = express();
 //const http = require('http');
 //const httpServer = http.Server(app);
 const https = require('https');
-const httpsOptions = {
-  key: "server.key",
-  cert: "server.crt",
-}
-const httpServer = https.Server(httpsOptions, app);
+const privateKey  = fs.readFileSync(process.env['SSL_KEY_PATH'], 'utf8');
+const certificate = fs.readFileSync(process.env['SSL_CRT_PATH'], 'utf8');
+const credentials = {key: privateKey, cert: certificate};
+const httpsServer = https.createServer(credentials, app);
 const io = require('socket.io')(httpServer);
 const child_process = require('child_process');
 const port = 9000;
@@ -88,6 +87,6 @@ io.on('connection', function (client) {
 
 });
 
-httpServer.listen(port, () => {
+httpsServer.listen(port, () => {
   console.log('Starting Socket.io Server on http://localhost:' + port);
 });
