@@ -411,7 +411,8 @@ function wsConnect(url) {
 			videoBitsPerSecond : 1500000 //1.5Gbps
 		});
 		mediaRecorder.ondataavailable = function(e){
-			wsConnection.send(e.data);
+			//wsConnection.send(e.data);
+			wsConnection.emit('live_stream', "bfb51a2c-7f54-45c9-93b6-0ee9d4749922");
 		}
 		mediaRecorder.start(3000); // Start recording, and dump data every 3 seconds
 
