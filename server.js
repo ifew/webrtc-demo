@@ -1,8 +1,14 @@
 "use strict";
 const express = require('express');
 const app = express();
-const http = require('http');
-const httpServer = http.Server(app);
+//const http = require('http');
+//const httpServer = http.Server(app);
+const https = require('https');
+const httpsOptions = {
+  key: null,
+  cert: null
+}
+const httpServer = https.Server(httpsOptions, app);
 const io = require('socket.io')(httpServer);
 const child_process = require('child_process');
 const port = 9000;
