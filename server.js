@@ -9,7 +9,7 @@ const privateKey  = fs.readFileSync("server.key", 'utf8');
 const certificate = fs.readFileSync("server.crt", 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 const httpsServer = https.createServer(credentials, app);
-const io = require('socket.io')(httpServer);
+const io = require('socket.io')(httpsServer);
 const child_process = require('child_process');
 const port = 9000;
 
