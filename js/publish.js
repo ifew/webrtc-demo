@@ -239,6 +239,23 @@ function selectorStart() {
 
 	navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
 
+	if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+		console.log("enumerateDevices() not supported.");
+		return;
+	} else {
+		console.log("enumerateDevices() is supported.");
+		navigator.mediaDevices.enumerateDevices()
+		.then(function(devices) {
+		devices.forEach(function(device) {
+			console.log(device.kind + ": " + device.label +
+						" id = " + device.deviceId);
+		});
+		})
+		.catch(function(err) {
+			console.log(err.name + ": " + err.message);
+		});
+	}
+
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
 		newAPI = true;
