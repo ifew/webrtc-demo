@@ -239,6 +239,7 @@ function selectorStart() {
 
 	navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
 
+	console.log("navigator.getUserMedia:" + navigator.getUserMedia);
 	if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
 		console.log("enumerateDevices() not supported.");
 		return;
@@ -420,8 +421,6 @@ function wsConnect(url) {
 		} catch (e) {
 			console.log(`Failed to create session description: ${e.toString()}`);
 		}
-
-		wsConnection.emit('live_stream', "bfb51a2c-7f54-45c9-93b6-0ee9d4749922");
 
 	});
 }
