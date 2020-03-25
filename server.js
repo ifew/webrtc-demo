@@ -5,8 +5,8 @@ const app = express();
 //const httpServer = http.Server(app);
 const https = require('https');
 const httpsOptions = {
-  key: null,
-  cert: null
+  key: "server.key",
+  cert: "server.crt",
 }
 const httpServer = https.Server(httpsOptions, app);
 const io = require('socket.io')(httpServer);
