@@ -411,7 +411,7 @@ function wsConnect(url) {
 		var canRecordH264 = MediaRecorder.isTypeSupported('video/webm;codecs=h264');
 		if(!canRecordH264)
 		{
-			mediaRecorderCoder = 'video/webm;codecs=vp9';
+			mediaRecorderCoder = 'video/webm;codecs=opus';
 		}
 		mediaRecorder = new MediaRecorder(mediaStream, {
 			mimeType: mediaRecorderCoder,
