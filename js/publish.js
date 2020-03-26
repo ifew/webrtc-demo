@@ -406,9 +406,15 @@ function wsConnect(url) {
 		//record streaming to buffer
 		let mediaRecorder;
 		let mediaStream;
+		var mediaRecorderCoder = 'video/webm;codecs=h264';
 		mediaStream = localVideo.captureStream(30); // 30 FPS
+		var canRecordH264 = MediaRecorder.isTypeSupported('video/webm;codecs=h264');
+		if(!canRecordH264)
+		{
+			mediaRecorderCoder = 'video/webm;codecs=vp9';
+		}
 		mediaRecorder = new MediaRecorder(mediaStream, {
-			mimeType: 'video/webm;codecs=h264',
+			mimeType: mediaRecorderCoder,
 			videoBitsPerSecond : 1500000 //1.5Gbps
 		});
 		mediaRecorder.ondataavailable = function(e){
