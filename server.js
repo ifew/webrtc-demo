@@ -23,9 +23,10 @@ io.on('connection', function (client) {
     client.emit('server_status', 'user disconnected');
   });
 
-  const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/bfb51a2c-7f54-45c9-93b6-0ee9d4749922");
+  const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/98e68e23-034c-4943-8a2a-2b28fc9e4b5e");
   console.log('Target RTMP URL:', rtmpUrl);
-
+  console.log('Checkout Live on URL:', "https://vimeo.com/event/33942");
+ 
   //code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/server.js
   const ffmpeg = child_process.spawn('ffmpeg', [
     // Facebook requires an audio track, so we create a silent one here.
