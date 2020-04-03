@@ -22,7 +22,7 @@
 
         <div class="ui segment form">
         <span id="sdpDataTag">Connecting...</span>
-        <div id="serverURL">Connecting...</div>
+        <div id="serverUrlDisplay">If blank screen, should open this for allow HTTPS before : <span id="serverUrl">Connecting...</span></div>
 
         <hr class="divider" />
 
@@ -52,8 +52,9 @@
         var videoFrameRate = "29.97";
         var videoChoice = "42e01f";
         var audioChoice = "opus";
-
-        $('#serverURL').html('<a href="'+wsURL+'">'+wsURL+'<a>');
+        
+        var wsURLhttps= wsURL.replace("wss", "https")
+        $('#serverUrl').html('<a href="'+wsURLhttps+'/socket.io/">'+wsURLhttps+'/socket.io/<a>');
 
         jQuery(document).ready(function() {
             setTimeout(browserReady(), 2000);
