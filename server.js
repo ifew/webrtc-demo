@@ -52,7 +52,7 @@ io.on('connection', function (client) {
     
     // AAC audio is required for Facebook Live.  No browser currently supports
     // encoding AAC, so we must transcode the audio to AAC here on the server.
-    '-acodec', 'aac',
+    '-acodec', 'libfdk_aac',
     
     // FLV is the container format used in conjunction with RTMP
     '-f', 'flv',
