@@ -31,7 +31,7 @@ io.on('connection', function (client) {
   const ffmpeg = child_process.spawn('ffmpeg', [
     // Facebook requires an audio track, so we create a silent one here.
     // Remove this line, as well as `-shortest`, if you send audio from the browser.
-    '-f', 'lavfi', '-t', 'duration', '-i', 'anullsrc',
+    '-f', 'lavfi', '-i', 'anullsrc',
     
     // FFmpeg will read input video from STDIN
     '-i', '-',
