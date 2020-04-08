@@ -31,7 +31,8 @@ io.on('connection', function (client) {
   const ffmpeg = child_process.spawn('ffmpeg', [
     // Facebook requires an audio track, so we create a silent one here.
     // Remove this line, as well as `-shortest`, if you send audio from the browser.
-    '-f', 'lavfi', '-i', 'anullsrc',
+    //'-f', 'lavfi', '-i', 'anullsrc',
+    `-shortest`,
     
     // FFmpeg will read input video from STDIN
     '-i', '-',
@@ -52,7 +53,7 @@ io.on('connection', function (client) {
     
     // AAC audio is required for Facebook Live.  No browser currently supports
     // encoding AAC, so we must transcode the audio to AAC here on the server.
-    '-acodec', 'libfdk_aac',
+    '-acodec', 'aac',
     
     // FLV is the container format used in conjunction with RTMP
     '-f', 'flv',
