@@ -39,8 +39,8 @@ io.on('connection', function (client) {
     //try to reduce low latency (normally 30sec)
     // '-fflags', 'nobuffer', 
     // '-probesize', '32', 
-    '-preset', 'ultrafast', 
-    '-tune', 'zerolatency', 
+    // '-preset', 'ultrafast', 
+    // '-tune', 'zerolatency', 
     // '-threads', '1',
     
     // Because we're using a generated audio source which never ends,
