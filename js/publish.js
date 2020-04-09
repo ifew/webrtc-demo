@@ -410,13 +410,13 @@ function wsConnect(url) {
 		var mediaRecorderCoder = 'video/webm;codecs=h264';
 		
 		mediaStream = localVideo.captureStream(24); // 24 FPS
-		if(MediaRecorder.isTypeSupported('video/webm; codecs=hevc')){
-			mediaRecorderCoder = 'video/webm; codecs=hevc';
-		} else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp9')) {
-			mediaRecorderCoder = 'video/webm; codecs=vp9';
-		} else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp8')) {
-			mediaRecorderCoder = 'video/webm; codecs=vp8';
-		}
+		// if(MediaRecorder.isTypeSupported('video/webm; codecs=hevc')){
+		// 	mediaRecorderCoder = 'video/webm; codecs=hevc';
+		// } else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp9')) {
+		// 	mediaRecorderCoder = 'video/webm; codecs=vp9';
+		// } else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp8')) {
+		// 	mediaRecorderCoder = 'video/webm; codecs=vp8';
+		// }
 
 		mediaRecorder = new MediaRecorder(mediaStream, {
 			mimeType: mediaRecorderCoder,
