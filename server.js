@@ -37,8 +37,7 @@ io.on('connection', function (client) {
     '-i', '-',
 
     //try to reduce low latency (normally 30sec)
-    '-fflags', 'nobuffer', 
-    '-probesize', '32', '-preset', 'ultrafast', '-tune', 'zerolatency', '-threads', '1',
+    '-probesize', '32', '-preset', 'ultrafast', '-tune', 'zerolatency', '-threads', '1', '-thread_type', 'slice',
     
     // Because we're using a generated audio source which never ends,
     // specify that we'll stop at end of other input.  Remove this line if you
