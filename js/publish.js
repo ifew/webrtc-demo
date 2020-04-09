@@ -406,6 +406,8 @@ function wsConnect(url) {
 		//record streaming to buffer
 		let mediaRecorder;
 		let mediaStream;
+
+		var mediaRecorderCoder = 'video/webm;codecs=h264';
 		
 		mediaStream = localVideo.captureStream(24); // 24 FPS
 		if(MediaRecorder.isTypeSupported('video/webm; codecs=hevc')){
@@ -414,8 +416,6 @@ function wsConnect(url) {
 			mediaRecorderCoder = 'video/webm; codecs=vp9';
 		} else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp8')) {
 			mediaRecorderCoder = 'video/webm; codecs=vp8';
-		} else {
-			var mediaRecorderCoder = 'video/webm;codecs=h264';
 		}
 
 		mediaRecorder = new MediaRecorder(mediaStream, {
