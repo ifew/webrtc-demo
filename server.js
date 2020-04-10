@@ -65,8 +65,8 @@ io.on('connection', function (client) {
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    //'-crf', '0',
-    '-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
+    '-crf', '0', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
+    //'-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
     '-movflags', 'faststart',
     
     // FLV is the container format used in conjunction with RTMP
