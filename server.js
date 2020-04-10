@@ -34,7 +34,7 @@ io.on('connection', function (client) {
     '-f', 'lavfi', '-i', 'anullsrc',
 
     //added fix stdin send/receive
-    '-r', '25',
+    //'-r', '25',
     
     // FFmpeg will read input video from STDIN
     '-i', '-',
@@ -65,7 +65,7 @@ io.on('connection', function (client) {
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    '-crf', '23', '-maxrate', '1M', '-bufsize', '2M',
+    //'-crf', '23', '-maxrate', '1M', '-bufsize', '2M',
     //'-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
     //'-movflags', 'faststart',
     
@@ -78,7 +78,7 @@ io.on('connection', function (client) {
     rtmpUrl,
 
     //added fix stdin send/receive
-    '-r', '25', '-async', '1', '-vsync' ,'1'
+    //'-r', '25', '-async', '1', '-vsync' ,'1'
   ]);
   
   // If FFmpeg stops for any reason, close the WebSocket connection.
