@@ -65,7 +65,7 @@ io.on('connection', function (client) {
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    '-crf', '0', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
+    '-crf', '0', '-maxrate', '1M', '-bufsize', '2M',
     //'-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
     '-movflags', 'faststart',
     
