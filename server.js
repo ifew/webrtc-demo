@@ -29,13 +29,11 @@ io.on('connection', function (client) {
  
   //code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/server.js
   const ffmpeg = child_process.spawn('ffmpeg', [
-    //added fix stdin send/receive
-    '-framerate', '25',
-
     // Facebook requires an audio track, so we create a silent one here.
     // Remove this line, as well as `-shortest`, if you send audio from the browser.
     '-f', 'lavfi', '-i', 'anullsrc',
-    
+        //added fix stdin send/receive
+        '-framerate', '25',
     // FFmpeg will read input video from STDIN
     '-i', '-',
 
