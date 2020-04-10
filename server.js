@@ -34,7 +34,7 @@ io.on('connection', function (client) {
     '-f', 'lavfi', '-i', 'anullsrc',
 
     //added fix stdin send/receive
-    '-framerate', '25',
+    '-r', '25',
     
     // FFmpeg will read input video from STDIN
     '-i', '-',
