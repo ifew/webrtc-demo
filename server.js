@@ -29,6 +29,9 @@ io.on('connection', function (client) {
  
   //code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/server.js
   const ffmpeg = child_process.spawn('ffmpeg', [
+
+    '-movflags', '+faststart',
+
     // Facebook requires an audio track, so we create a silent one here.
     // Remove this line, as well as `-shortest`, if you send audio from the browser.
     '-f', 'lavfi', '-i', 'anullsrc',
@@ -65,8 +68,8 @@ io.on('connection', function (client) {
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    '-crf', '0',
-    '-maxrate', '100k', '-bufsize', '2M',
+    //'-crf', '0',
+    '-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M', '-pass', '1',
     
     // FLV is the container format used in conjunction with RTMP
     '-f', 'flv',
