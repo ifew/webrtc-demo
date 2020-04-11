@@ -409,7 +409,7 @@ function wsConnect(url) {
 
 		var mediaRecorderCoder = 'video/webm;codecs=h264';
 		
-		mediaStream = localVideo.captureStream(30); // 30 FPS
+		mediaStream = localVideo.captureStream(25); // 30 FPS
 		if(!MediaRecorder.isTypeSupported('video/webm;codecs=h264')){
 			if(MediaRecorder.isTypeSupported('video/webm; codecs=hevc')){
 				mediaRecorderCoder = 'video/webm; codecs=hevc';
@@ -427,7 +427,7 @@ function wsConnect(url) {
 		mediaRecorder.ondataavailable = function(e){
 			wsConnection.send(e.data);
 		}
-		mediaRecorder.start(1000); // Start recording, and dump data every 3 seconds
+		mediaRecorder.start(2000); // Start recording, and dump data every 3 seconds
 
 		try {
 			peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);

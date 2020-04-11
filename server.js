@@ -66,7 +66,7 @@ io.on('connection', function (client) {
 
     //added fix stdin send/receive
     //'-crf', '0', '-maxrate', '1M', '-bufsize', '2M',
-    '-b:v', '1M', '-maxrate', '1M', '-bufsize', '2M',
+    '-b:v', '1.5M', '-maxrate', '1.5M', '-bufsize', '1M',
     '-movflags', 'faststart',
     '-r', '25', 
     
