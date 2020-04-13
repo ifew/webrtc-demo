@@ -34,17 +34,17 @@ io.on('connection', function (client) {
     '-f', 'lavfi', '-i', 'anullsrc',
 
     //added fix stdin send/receive
-    '-r', '25',
+    // '-r', '25',
 
     // FFmpeg will read input video from STDIN
     '-i', '-',
 
     //try to reduce low latency (normally 30sec)
-    '-fflags', 'nobuffer', 
-    '-probesize', '32', 
+    //'-fflags', 'nobuffer', 
+    //'-probesize', '32', 
     '-preset', 'ultrafast', 
-    '-tune', 'zerolatency', 
-    '-threads', '1',
+    //'-tune', 'zerolatency', 
+    //'-threads', '1',
     
     // Because we're using a generated audio source which never ends,
     // specify that we'll stop at end of other input.  Remove this line if you
@@ -65,10 +65,14 @@ io.on('connection', function (client) {
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    //'-crf', '0', '-maxrate', '1M', '-bufsize', '2M',
-    '-b:v', '1.5M', '-maxrate', '1.5M', '-bufsize', '1M',
-    '-movflags', 'faststart',
-    '-r', '25', 
+    //'-b:v', '1.5M', '-maxrate', '1.5M', '-bufsize', '1M',
+    '-g', '90',
+    '-movflags', '+faststart',
+    '-pix_fmt', 'yuv420p',
+    '-force_key_frames', '2',
+    //'-vf', 'yadif',
+    //'-crf', '18', '-bf', '2',
+    // '-r', '25', 
     
     // FLV is the container format used in conjunction with RTMP
     '-f', 'flv',
@@ -79,7 +83,7 @@ io.on('connection', function (client) {
     rtmpUrl,
 
     //added fix stdin send/receive
-    '-async', '1', '-vsync' ,'1'
+    //'-async', '1', '-vsync' ,'1'
   ]);
   
   // If FFmpeg stops for any reason, close the WebSocket connection.
