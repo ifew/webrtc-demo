@@ -11,6 +11,9 @@ const credentials = {key: privateKey, cert: certificate};
 const httpsServer = https.createServer(credentials, app);
 const io = require('socket.io')(httpsServer);
 const child_process = require('child_process');
+const Vimeo = require('vimeo').Vimeo;
+//api app name "Unilever Event"
+const VimeoClient = new Vimeo("ed8b8b2911f27fdea03792b125dc347f1c574ee3", "ZO+Sk5RuvipLKknMVCntyZDe/ZOZ5xFtgwQJL98E8LuU2G0gvX1hcBUprNdPxei4GaOmhufSlbQ3V1ykm+qQi6qri0D3fENDj6fdjfXXa4FPFEFtWZyR/76aKk5eNmyq", "06c1dc59851ff33fe518dc4d4516a292");
 const port = 9000;
 
 io.on('connection', function (client) {
@@ -112,6 +115,7 @@ io.on('connection', function (client) {
   client.on('close', (e) => {
     ffmpeg.kill('SIGINT');
   });
+  
 
 });
 
