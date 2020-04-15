@@ -23,6 +23,7 @@
       }).catch(function(error) {
           // an error occurred
       });
+      iframe.contentWindow.postMessage('{"method":"setVolume", "value":0}','*');
     });
 
     $("#open").click(function(){
@@ -33,6 +34,7 @@
       }).catch(function(error) {
           // an error occurred
       });
+      iframe.contentWindow.postMessage('{"method":"setVolume", "value":1}','*');
     });
 
   //   var options = {
