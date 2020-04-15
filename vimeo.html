@@ -17,12 +17,22 @@
 
     $("#mute").click(function(){
       //$("iframe").hide();
-      player.api('setVolume', 0); 
+      //player.api('setVolume', 0); 
+      player.setMuted(true).then(function(muted) {
+          // muted was turned on
+      }).catch(function(error) {
+          // an error occurred
+      });
     });
 
     $("#open").click(function(){
       //$("iframe").show();
-      player.api('setVolume', 1); 
+      //player.api('setVolume', 1); 
+      player.setMuted(false).then(function(muted) {
+          // muted was turned on
+      }).catch(function(error) {
+          // an error occurred
+      });
     });
 
   //   var options = {
