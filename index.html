@@ -52,9 +52,10 @@
 
         var userAgent = navigator.userAgent;
         var wsURL = "wss://10.91.2.19:9000";
-        var videoBitrate = 600;
+        var videoBitrate = 2000000;
         var audioBitrate = 64;
-        var videoFrameRate = "29.97";
+        var videoFrameRate = 30;
+        var bufferTimeout = 2000;
         var videoChoice = "42e01f";
         var audioChoice = "opus";
         
@@ -62,7 +63,7 @@
         $('#serverUrl').html('<a href="'+wsURLhttps+'/socket.io/" target="_blank">'+wsURLhttps+'/socket.io/<a>');
 
         jQuery(document).ready(function() {
-            setTimeout(browserReady(), 2000);
+            setTimeout(browserReady(), bufferTimeout);
         });
 
         </script>
