@@ -4,27 +4,35 @@
 </head>
 <body>
 
-  <iframe src="https://vimeo.com/event/33942/embed" width="480" height="360" frameborder="0" allow="autoplay; fullscreen" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+  <!-- <iframe src="https://vimeo.com/event/33942/embed" width="480" height="360" frameborder="0" allow="autoplay; fullscreen" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+  <!-- <iframe src="http://player.vimeo.com/video/407127007" width="480" height="360" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> -->
+  <div id="myVideo"></div>
 
+  <button id="mute">Mute Sound</button> <button id="open">Open Sound</button>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
     var options = {
-        autopause: false,
-        autoplay: true,
-        loop: false,
-    };
-    var iframe = document.querySelector('iframe');
-    var player = new Vimeo.Player(iframe, options);
+    url: "https://vimeo.com/407127007",
+    width: 480
+  };
 
-    player.on('play', function() {
-      console.log('Played the video');
+  var videoPlayer = new Vimeo.Player('myVideo', options);
+
+    $("#mute").click(function(){
+      //$("iframe").hide();
+       videoPlayer.setVolume(0);
     });
 
-    player.getVideoTitle().then(function(title) {
-      console.log('title:', title);
+    $("#open").click(function(){
+      //$("iframe").show();
+      videoPlayer.setVolume(1);
     });
+  });
   </script>
+
 
 </body>
 </html>
