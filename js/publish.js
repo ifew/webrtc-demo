@@ -10,9 +10,7 @@ var resolutionSelect = null;
 var localVideo = null;
 var remoteVideo = null;
 var peerConnection = null;
-var peerConnectionConfig = { 
-	"iceServers": []
- };
+var peerConnectionConfig = { iceServers: []};
 var localStream = null;
 var wsConnection = null;
 var videoIndex = -1;
@@ -20,7 +18,6 @@ var audioIndex = -1;
 var newAPI = true;
 var SDPOutput = new Object();
 const dataChannelOptions = {ordered: true};
-
 
 var videoWidth = '640';
 var videoHeight = '480';
@@ -111,9 +108,7 @@ function selectorsReady() {
 	}
 
 	resolutionSelect.selectedIndex = 4;
-
 	resolutionSelect.onchange = selectorChange;
-
 	selectorStart();
 
 }
@@ -168,7 +163,6 @@ function gotDevices(deviceInfos) {
 			select.value = values[selectorIndex];
 		}
 	});
-
 
 	//updating videoSource,audioSource only if still valid because Safari changes deviceID
 
@@ -277,11 +271,7 @@ function selectorStart() {
 }
 
 
-
-
-
 //WebRTC Publish
-
 function browserReady() {
 
 	localVideo = document.getElementById('localVideo');
@@ -324,37 +314,36 @@ function displayVideoDimensions(whereSeen) {
 
 }
 
-function getOtherPc(pc) {
-	return peerConnection;
-}
+// function getOtherPc(pc) {
+// 	return peerConnection;
+// }
 
-function getName(pc) {
-	return 'peerConnection';
-}
-async function onIceCandidate(pc, event) {
-    try {
-      // eslint-disable-next-line no-unused-vars
-      const ignore = await getOtherPc(pc).addIceCandidate(event.candidate);
-	  console.log('AddIceCandidate success.');
-      onAddIceCandidateSuccess(pc, event.candidate);
-    } catch (e) {
-      onAddIceCandidateError(pc, e);
-    }
+// function getName(pc) {
+// 	return 'peerConnection';
+// }
+// async function onIceCandidate(pc, event) {
+// 	try {
+// 		// eslint-disable-next-line no-unused-vars
+// 		const ignore = await getOtherPc(pc).addIceCandidate(event.candidate);
+// 		console.log('AddIceCandidate success.');
+// 		onAddIceCandidateSuccess(pc, event.candidate);
+// 	} catch (e) {
+// 		onAddIceCandidateError(pc, e);
+// 	}
 
-    console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
-  }
+// 	console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+// }
 
-  function onAddIceCandidateSuccess(pc, event) {
-	  if(event != null) {
-		console.log('AddIceCandidate success!!.');
-	  }
-	// console.log(`onAddIceCandidateSuccess ${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
-  }
+//   function onAddIceCandidateSuccess(pc, event) {
+// 	  if(event != null) {
+// 		console.log('AddIceCandidate success!!.');
+// 	  }
+// 	console.log(`onAddIceCandidateSuccess ${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+//   }
 
-  function onAddIceCandidateError(error) {
-    console.log(`Failed to add Ice Candidate: ${error.toString()}`);
-  }
-
+//   function onAddIceCandidateError(error) {
+//     console.log(`Failed to add Ice Candidate: ${error.toString()}`);
+//   }
 
 const offerOptions = {
 	iceRestart: 1,
@@ -380,23 +369,20 @@ function wsConnect(url) {
 	wsConnection.on('connect', function() { 
 		console.log("wsConnection.onopen");
 
-		peerConnection = new RTCPeerConnection(peerConnectionConfig);
-		peerConnection.onicecandidate = e => onIceCandidate(peerConnection, e);
-		peerConnection.onsignalingstatechange = stateCallback1;
-		console.log(`start call iceStateCallback1`);
-		peerConnection.oniceconnectionstatechange = iceStateCallback1;
-		console.log(`after call iceStateCallback1`);
-		console.log(`iceGatheringState: ` + peerConnection.iceGatheringState);
+		// peerConnection = new RTCPeerConnection(peerConnectionConfig);
+		// peerConnection.onicecandidate = e => onIceCandidate(peerConnection, e);
+		// peerConnection.onsignalingstatechange = stateCallback1;
+		// console.log(`start call iceStateCallback1`);
+		// peerConnection.oniceconnectionstatechange = iceStateCallback1;
+		// console.log(`after call iceStateCallback1`);
+		// console.log(`iceGatheringState: ` + peerConnection.iceGatheringState);
 	
-		if (newAPI) {
-
-			localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
-			console.log('wsConnection.onopen Adding Local Stream to peer connection');
-
-		}
-		else {
-			peerConnection.addStream(localStream);
-		}
+		// if (newAPI) {
+		// 	localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+		// 	console.log('wsConnection.onopen Adding Local Stream to peer connection');
+		// } else {
+		// 	peerConnection.addStream(localStream);
+		// }
 
 		//send preview to remote video on index.php
 		var remoteVideo = document.querySelector('#remoteVideo');
@@ -407,7 +393,7 @@ function wsConnect(url) {
 		let mediaRecorder;
 		let mediaStream;
 
-		var mediaRecorderCoder = 'video/webm;codecs=h264';
+		var mediaRecorderCoder = 'video/webm; codecs=h264';
 		
 		//mediaStream = localVideo.captureStream(25); // 30 FPS
 		mediaStream = localVideo.captureStream(videoFrameRate); // 30 FPS
@@ -423,99 +409,102 @@ function wsConnect(url) {
 
 		mediaRecorder = new MediaRecorder(mediaStream, {
 			mimeType: mediaRecorderCoder,
-			videoBitsPerSecond : videoBitrate //1500000 //1.5Gbps
+			videoBitsPerSecond : videoBitrate, //1500000 //1.5Gbps
+			audioBitsPerSecond : audioBitrate
 		});
 		mediaRecorder.ondataavailable = function(e){
-			wsConnection.send(e.data);
+			wsConnection.send(e.data); //{size: 403705, type: "video/x-matroska;codecs=avc1,opus"}
 		}
-		mediaRecorder.start(bufferTimeout); // Start recording, and dump data every 3 seconds
+		//mediaRecorder.start(bufferTimeout); // Start recording, and dump data every 3 seconds
+		mediaRecorder.start();
 
-		try {
-			peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
-		} catch (e) {
-			console.log(`Failed to create session description: ${e.toString()}`);
-		}
+		// try {
+		// 	peerConnection.createOffer(offerOptions).then(gotDescription, errorHandler);
+		// } catch (e) {
+		// 	console.log(`Failed to create session description: ${e.toString()}`);
+		// }
 
 	});
 }
 
-	function stateCallback1() {
-		console.log(`called stateCallback1`);
-		let state;
-		if (peerConnection) {
-			state = peerConnection.signalingState || peerConnection.readyState;
-			console.log(`peerConnection state change callback, state: ${state}`);
 
-			jQuery("#sdpDataTag").html('Peer: ' + state);
-		}
-	}
+	// function stateCallback1() {
+	// 	console.log(`called stateCallback1`);
+	// 	let state;
+	// 	if (peerConnection) {
+	// 		state = peerConnection.signalingState || peerConnection.readyState;
+	// 		console.log(`peerConnection state change callback, state: ${state}`);
 
-	function iceStateCallback1() {
-		console.log(`called iceStateCallback1`);
-		let iceState;
-		if (peerConnection) {
-			iceState = peerConnection.iceConnectionState;
-			console.log(`peerConnection ICE connection state change callback, state: ${iceState}`);
+	// 		jQuery("#sdpDataTag").html('Peer: ' + state);
+	// 	}
+	// }
 
-			jQuery("#sdpDataTag").html('Peer connnection: ' + iceState);
-		}
+	// function iceStateCallback1() {
+	// 	console.log(`called iceStateCallback1`);
+	// 	let iceState;
+	// 	if (peerConnection) {
+	// 		iceState = peerConnection.iceConnectionState;
+	// 		console.log(`peerConnection ICE connection state change callback, state: ${iceState}`);
 
-		// console.log("wsConnect get stream 1:" + localStream);
-		// wsConnection.emit('stream', localStream);
+	// 		jQuery("#sdpDataTag").html('Peer connnection: ' + iceState);
+	// 	}
+
+	// 	console.log("wsConnect get stream 1:" + localStream);
+	// 	wsConnection.emit('stream', localStream);
 
 
-		wsConnection.emit('message', function(evt) {
-			console.log("wsConnection.onmessage: " + evt);
+	// 	wsConnection.emit('message', function(evt) {
+	// 		console.log("wsConnection.onmessage: " + evt);
 
-			var msgJSON = JSON.parse(evt);
+	// 		var msgJSON = JSON.parse(evt);
 
-			var msgStatus = Number(msgJSON['status']);
-			var msgCommand = msgJSON['command'];
+	// 		var msgStatus = Number(msgJSON['status']);
+	// 		var msgCommand = msgJSON['command'];
 
-			if (msgStatus != 200) {
-				jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
-				stopPublisher();
-			}
-			else {
-				jQuery("#sdpDataTag").html("");
+	// 		if (msgStatus != 200) {
+	// 			jQuery("#sdpDataTag").html(msgJSON['statusDescription']);
+	// 			stopPublisher();
+	// 		}
+	// 		else {
+	// 			jQuery("#sdpDataTag").html("");
 
-				var sdpData = msgJSON['sdp'];
-				if (sdpData !== undefined) {
-					console.log('sdp: ' + msgJSON['sdp']);
+	// 			var sdpData = msgJSON['sdp'];
+	// 			if (sdpData !== undefined) {
+	// 				console.log('sdp: ' + msgJSON['sdp']);
 
-					peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
-						//peerConnection.createAnswer(gotDescription, errorHandler);
-					}, errorHandler);
-				}
+	// 				peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData), function () {
+	// 					peerConnection.createAnswer(gotDescription, errorHandler);
+	// 				}, errorHandler);
+	// 			}
 
-				var iceCandidates = msgJSON['iceCandidates'];
-				if (iceCandidates !== undefined) {
-					for (var index in iceCandidates) {
-						console.log('iceCandidates: ' + iceCandidates[index]);
+	// 			var iceCandidates = msgJSON['iceCandidates'];
+	// 			if (iceCandidates !== undefined) {
+	// 				for (var index in iceCandidates) {
+	// 					console.log('iceCandidates: ' + iceCandidates[index]);
 
-						//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
-						peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
+	// 					//peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
+	// 					peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index])).then(() => onAddIceCandidateSuccess(peerConnection), err => onAddIceCandidateError(peerConnection, err));
 
-					}
-				}
-			}
+	// 				}
+	// 			}
+	// 		}
 
-			if (wsConnection != null)
-				wsConnection.close();
-			wsConnection = null;
-		});
+	// 		if (wsConnection != null)
+	// 			wsConnection.close();
+	// 		wsConnection = null;
+	// 	});
 
-		wsConnection.on('close', function() { 
-			console.log("wsConnection.onclose");
-		});
+	// 	wsConnection.on('close', function() { 
+	// 		console.log("wsConnection.onclose");
+	// 	});
 
-		wsConnection.on('error', function() { 
-			console.log("wsConnection.onerror: " + JSON.stringify(evt));
+	// 	wsConnection.on('error', function() { 
+	// 		console.log("wsConnection.onerror: " + JSON.stringify(evt));
 
-			jQuery("#sdpDataTag").html('WebSocket connection failed: ' + wsURL);
-			stopPublisher();
-		});
-	}
+	// 		jQuery("#sdpDataTag").html('WebSocket connection failed: ' + wsURL);
+	// 		stopPublisher();
+	// 	});
+	// }
 
 // function onAddIceCandidateSuccess() {
 // 	console.log('AddIceCandidate success.');
@@ -558,288 +547,288 @@ function start() {
 		stopPublisher();
 }
 
-function gotIceCandidate(event) {
-	if (event.candidate != null) {
-		console.log('gotIceCandidate: ' + JSON.stringify({ 'ice': event.candidate }));
-	}
-}
+// function gotIceCandidate(event) {
+// 	if (event.candidate != null) {
+// 		console.log('gotIceCandidate: ' + JSON.stringify({ 'ice': event.candidate }));
+// 	}
+// }
 
-function gotDescription(description) {
-	var enhanceData = new Object();
+// function gotDescription(description) {
+// 	var enhanceData = new Object();
 
-	if (audioBitrate !== undefined) enhanceData.audioBitrate = Number(audioBitrate);
+// 	if (audioBitrate !== undefined) enhanceData.audioBitrate = Number(audioBitrate);
 
-	if (videoBitrate !== undefined) enhanceData.videoBitrate = Number(videoBitrate);
-	if (videoFrameRate !== undefined) enhanceData.videoFrameRate = Number(videoFrameRate);
+// 	if (videoBitrate !== undefined) enhanceData.videoBitrate = Number(videoBitrate);
+// 	if (videoFrameRate !== undefined) enhanceData.videoFrameRate = Number(videoFrameRate);
 
-	description.sdp = enhanceSDP(description.sdp, enhanceData);
+// 	description.sdp = enhanceSDP(description.sdp, enhanceData);
 
-	peerConnection.setLocalDescription(description, function () {
+// 	peerConnection.setLocalDescription(description, function () {
 
-		//wsConnection.send('{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
+// 		//wsConnection.send('{"direction":"publish", "command":"sendOffer", "streamInfo":' + JSON.stringify(streamInfo) + ', "sdp":' + JSON.stringify(description) + ', "userData":' + JSON.stringify(userData) + '}');
 
-	}, function () { console.log('set description error') });
-}
+// 	}, function () { console.log('set description error') });
+// }
 
-function addAudio(sdpStr, audioLine) {
-	var sdpLines = sdpStr.split(/\r\n/);
-	var sdpSection = 'header';
-	var hitMID = false;
-	var sdpStrRet = '';
-	var done = false;
+// function addAudio(sdpStr, audioLine) {
+// 	var sdpLines = sdpStr.split(/\r\n/);
+// 	var sdpSection = 'header';
+// 	var hitMID = false;
+// 	var sdpStrRet = '';
+// 	var done = false;
 
-	for (var sdpIndex in sdpLines) {
-		var sdpLine = sdpLines[sdpIndex];
+// 	for (var sdpIndex in sdpLines) {
+// 		var sdpLine = sdpLines[sdpIndex];
 
-		if (sdpLine.length <= 0)
-			continue;
-
-
-		sdpStrRet += sdpLine;
-		sdpStrRet += '\r\n';
-
-		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == false) {
-			sdpStrRet += audioLine;
-			done = true;
-		}
+// 		if (sdpLine.length <= 0)
+// 			continue;
 
 
-	}
-	return sdpStrRet;
-}
+// 		sdpStrRet += sdpLine;
+// 		sdpStrRet += '\r\n';
 
-function addVideo(sdpStr, videoLine) {
-	var sdpLines = sdpStr.split(/\r\n/);
-	var sdpSection = 'header';
-	var hitMID = false;
-	var sdpStrRet = '';
-	var done = false;
-
-	var rtcpSize = false;
-	var rtcpMux = false;
-
-	for (var sdpIndex in sdpLines) {
-		var sdpLine = sdpLines[sdpIndex];
-
-		if (sdpLine.length <= 0)
-			continue;
-
-		if (sdpLine.includes("a=rtcp-rsize")) {
-			rtcpSize = true;
-		}
-
-		if (sdpLine.includes("a=rtcp-mux")) {
-			rtcpMux = true;
-		}
-
-	}
-
-	for (var sdpIndex in sdpLines) {
-		var sdpLine = sdpLines[sdpIndex];
-
-		sdpStrRet += sdpLine;
-		sdpStrRet += '\r\n';
-
-		if (('a=rtcp-rsize'.localeCompare(sdpLine) == 0) && done == false && rtcpSize == true) {
-			sdpStrRet += videoLine;
-			done = true;
-		}
-
-		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == true && rtcpSize == false) {
-			sdpStrRet += videoLine;
-			done = true;
-		}
-
-		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == false && rtcpSize == false) {
-			done = true;
-		}
-
-	}
-	return sdpStrRet;
-}
+// 		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == false) {
+// 			sdpStrRet += audioLine;
+// 			done = true;
+// 		}
 
 
-function enhanceSDP(sdpStr, enhanceData) {
-	var sdpLines = sdpStr.split(/\r\n/);
-	var sdpSection = 'header';
-	var hitMID = false;
-	var sdpStrRet = '';
-	var audioMLines;
+// 	}
+// 	return sdpStrRet;
+// }
 
-	//console.log("Original SDP: " + sdpStr);
+// function addVideo(sdpStr, videoLine) {
+// 	var sdpLines = sdpStr.split(/\r\n/);
+// 	var sdpSection = 'header';
+// 	var hitMID = false;
+// 	var sdpStrRet = '';
+// 	var done = false;
 
-	if (!sdpStr.includes("THIS_IS_SDPARTA") || videoChoice.includes("VP9")) {
-		for (var sdpIndex in sdpLines) {
-			var sdpLine = sdpLines[sdpIndex];
+// 	var rtcpSize = false;
+// 	var rtcpMux = false;
 
-			if (sdpLine.length <= 0)
-				continue;
+// 	for (var sdpIndex in sdpLines) {
+// 		var sdpLine = sdpLines[sdpIndex];
 
-			var doneCheck = checkLine(sdpLine);
-			if (!doneCheck)
-				continue;
+// 		if (sdpLine.length <= 0)
+// 			continue;
 
-			sdpStrRet += sdpLine;
-			sdpStrRet += '\r\n';
+// 		if (sdpLine.includes("a=rtcp-rsize")) {
+// 			rtcpSize = true;
+// 		}
 
-		}
-		sdpStrRet = addAudio(sdpStrRet, deliverCheckLine(audioChoice, "audio"));
-		sdpStrRet = addVideo(sdpStrRet, deliverCheckLine(videoChoice, "video"));
-		sdpStr = sdpStrRet;
-		sdpLines = sdpStr.split(/\r\n/);
-		sdpStrRet = '';
-	}
+// 		if (sdpLine.includes("a=rtcp-mux")) {
+// 			rtcpMux = true;
+// 		}
 
-	for (var sdpIndex in sdpLines) {
-		var sdpLine = sdpLines[sdpIndex];
+// 	}
 
-		if (sdpLine.length <= 0)
-			continue;
+// 	for (var sdpIndex in sdpLines) {
+// 		var sdpLine = sdpLines[sdpIndex];
 
-		if (sdpLine.indexOf("m=audio") == 0 && audioIndex != -1) {
-			audioMLines = sdpLine.split(" ");
-			sdpStrRet += audioMLines[0] + " " + audioMLines[1] + " " + audioMLines[2] + " " + audioIndex + "\r\n";
-			continue;
-		}
+// 		sdpStrRet += sdpLine;
+// 		sdpStrRet += '\r\n';
 
-		if (sdpLine.indexOf("m=video") == 0 && videoIndex != -1) {
-			audioMLines = sdpLine.split(" ");
-			sdpStrRet += audioMLines[0] + " " + audioMLines[1] + " " + audioMLines[2] + " " + videoIndex + "\r\n";
-			continue;
-		}
+// 		if (('a=rtcp-rsize'.localeCompare(sdpLine) == 0) && done == false && rtcpSize == true) {
+// 			sdpStrRet += videoLine;
+// 			done = true;
+// 		}
 
-		sdpStrRet += sdpLine;
+// 		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == true && rtcpSize == false) {
+// 			sdpStrRet += videoLine;
+// 			done = true;
+// 		}
 
-		if (sdpLine.indexOf("m=audio") === 0) {
-			sdpSection = 'audio';
-			hitMID = false;
-		}
-		else if (sdpLine.indexOf("m=video") === 0) {
-			sdpSection = 'video';
-			hitMID = false;
-		}
-		else if (sdpLine.indexOf("a=rtpmap") == 0) {
-			sdpSection = 'bandwidth';
-			hitMID = false;
-		}
+// 		if ('a=rtcp-mux'.localeCompare(sdpLine) == 0 && done == false && rtcpSize == false) {
+// 			done = true;
+// 		}
 
-		if (sdpLine.indexOf("a=mid:") === 0 || sdpLine.indexOf("a=rtpmap") == 0) {
-			if (!hitMID) {
-				if ('audio'.localeCompare(sdpSection) == 0) {
-					if (enhanceData.audioBitrate !== undefined) {
-						sdpStrRet += '\r\nb=CT:' + (enhanceData.audioBitrate);
-						sdpStrRet += '\r\nb=AS:' + (enhanceData.audioBitrate);
-					}
-					hitMID = true;
-				}
-				else if ('video'.localeCompare(sdpSection) == 0) {
-					if (enhanceData.videoBitrate !== undefined) {
-						sdpStrRet += '\r\nb=CT:' + (enhanceData.videoBitrate);
-						sdpStrRet += '\r\nb=AS:' + (enhanceData.videoBitrate);
-						if (enhanceData.videoFrameRate !== undefined) {
-							sdpStrRet += '\r\na=framerate:' + enhanceData.videoFrameRate;
-						}
-					}
-					hitMID = true;
-				}
-				else if ('bandwidth'.localeCompare(sdpSection) == 0) {
-					var rtpmapID;
-					rtpmapID = getrtpMapID(sdpLine);
-					if (rtpmapID !== null) {
-						var match = rtpmapID[2].toLowerCase();
-						if (('vp9'.localeCompare(match) == 0) || ('vp8'.localeCompare(match) == 0) || ('h264'.localeCompare(match) == 0) ||
-							('red'.localeCompare(match) == 0) || ('ulpfec'.localeCompare(match) == 0) || ('rtx'.localeCompare(match) == 0)) {
-							if (enhanceData.videoBitrate !== undefined) {
-								sdpStrRet += '\r\na=fmtp:' + rtpmapID[1] + ' x-google-min-bitrate=' + (enhanceData.videoBitrate) + ';x-google-max-bitrate=' + (enhanceData.videoBitrate);
-							}
-						}
-
-						if (('opus'.localeCompare(match) == 0) || ('isac'.localeCompare(match) == 0) || ('g722'.localeCompare(match) == 0) || ('pcmu'.localeCompare(match) == 0) ||
-							('pcma'.localeCompare(match) == 0) || ('cn'.localeCompare(match) == 0)) {
-							if (enhanceData.audioBitrate !== undefined) {
-								sdpStrRet += '\r\na=fmtp:' + rtpmapID[1] + ' x-google-min-bitrate=' + (enhanceData.audioBitrate) + ';x-google-max-bitrate=' + (enhanceData.audioBitrate);
-							}
-						}
-					}
-				}
-			}
-		}
-		sdpStrRet += '\r\n';
-	}
-	//console.log("Resuling SDP: " + sdpStrRet);
-	return sdpStrRet;
-}
+// 	}
+// 	return sdpStrRet;
+// }
 
 
-function deliverCheckLine(profile, type) {
-	var outputString = "";
-	for (var line in SDPOutput) {
-		var lineInUse = SDPOutput[line];
-		outputString += line;
-		if (lineInUse.includes(profile)) {
-			if (profile.includes("VP9") || profile.includes("VP8")) {
-				var output = "";
-				var outputs = lineInUse.split(/\r\n/);
-				for (var position in outputs) {
-					var transport = outputs[position];
-					if (transport.indexOf("transport-cc") !== -1 || transport.indexOf("goog-remb") !== -1 || transport.indexOf("nack") !== -1) {
-						continue;
-					}
-					output += transport;
-					output += "\r\n";
-				}
+// function enhanceSDP(sdpStr, enhanceData) {
+// 	var sdpLines = sdpStr.split(/\r\n/);
+// 	var sdpSection = 'header';
+// 	var hitMID = false;
+// 	var sdpStrRet = '';
+// 	var audioMLines;
 
-				if (type.includes("audio")) {
-					audioIndex = line;
-				}
+// 	//console.log("Original SDP: " + sdpStr);
 
-				if (type.includes("video")) {
-					videoIndex = line;
-				}
+// 	if (!sdpStr.includes("THIS_IS_SDPARTA") || videoChoice.includes("VP9")) {
+// 		for (var sdpIndex in sdpLines) {
+// 			var sdpLine = sdpLines[sdpIndex];
 
-				return output;
-			}
-			if (type.includes("audio")) {
-				audioIndex = line;
-			}
+// 			if (sdpLine.length <= 0)
+// 				continue;
 
-			if (type.includes("video")) {
-				videoIndex = line;
-			}
-			return lineInUse;
-		}
-	}
-	return outputString;
-}
+// 			var doneCheck = checkLine(sdpLine);
+// 			if (!doneCheck)
+// 				continue;
 
-function checkLine(line) {
-	if (line.startsWith("a=rtpmap") || line.startsWith("a=rtcp-fb") || line.startsWith("a=fmtp")) {
-		var res = line.split(":");
+// 			sdpStrRet += sdpLine;
+// 			sdpStrRet += '\r\n';
 
-		if (res.length > 1) {
-			var number = res[1].split(" ");
-			if (!isNaN(number[0])) {
-				if (!number[1].startsWith("http") && !number[1].startsWith("ur")) {
-					var currentString = SDPOutput[number[0]];
-					if (!currentString) {
-						currentString = "";
-					}
-					currentString += line + "\r\n";
-					SDPOutput[number[0]] = currentString;
-					return false;
-				}
-			}
-		}
-	}
+// 		}
+// 		sdpStrRet = addAudio(sdpStrRet, deliverCheckLine(audioChoice, "audio"));
+// 		sdpStrRet = addVideo(sdpStrRet, deliverCheckLine(videoChoice, "video"));
+// 		sdpStr = sdpStrRet;
+// 		sdpLines = sdpStr.split(/\r\n/);
+// 		sdpStrRet = '';
+// 	}
 
-	return true;
-}
+// 	for (var sdpIndex in sdpLines) {
+// 		var sdpLine = sdpLines[sdpIndex];
 
-function getrtpMapID(line) {
-	var findid = new RegExp('a=rtpmap:(\\d+) (\\w+)/(\\d+)');
-	var found = line.match(findid);
-	return (found && found.length >= 3) ? found : null;
-}
+// 		if (sdpLine.length <= 0)
+// 			continue;
+
+// 		if (sdpLine.indexOf("m=audio") == 0 && audioIndex != -1) {
+// 			audioMLines = sdpLine.split(" ");
+// 			sdpStrRet += audioMLines[0] + " " + audioMLines[1] + " " + audioMLines[2] + " " + audioIndex + "\r\n";
+// 			continue;
+// 		}
+
+// 		if (sdpLine.indexOf("m=video") == 0 && videoIndex != -1) {
+// 			audioMLines = sdpLine.split(" ");
+// 			sdpStrRet += audioMLines[0] + " " + audioMLines[1] + " " + audioMLines[2] + " " + videoIndex + "\r\n";
+// 			continue;
+// 		}
+
+// 		sdpStrRet += sdpLine;
+
+// 		if (sdpLine.indexOf("m=audio") === 0) {
+// 			sdpSection = 'audio';
+// 			hitMID = false;
+// 		}
+// 		else if (sdpLine.indexOf("m=video") === 0) {
+// 			sdpSection = 'video';
+// 			hitMID = false;
+// 		}
+// 		else if (sdpLine.indexOf("a=rtpmap") == 0) {
+// 			sdpSection = 'bandwidth';
+// 			hitMID = false;
+// 		}
+
+// 		if (sdpLine.indexOf("a=mid:") === 0 || sdpLine.indexOf("a=rtpmap") == 0) {
+// 			if (!hitMID) {
+// 				if ('audio'.localeCompare(sdpSection) == 0) {
+// 					if (enhanceData.audioBitrate !== undefined) {
+// 						sdpStrRet += '\r\nb=CT:' + (enhanceData.audioBitrate);
+// 						sdpStrRet += '\r\nb=AS:' + (enhanceData.audioBitrate);
+// 					}
+// 					hitMID = true;
+// 				}
+// 				else if ('video'.localeCompare(sdpSection) == 0) {
+// 					if (enhanceData.videoBitrate !== undefined) {
+// 						sdpStrRet += '\r\nb=CT:' + (enhanceData.videoBitrate);
+// 						sdpStrRet += '\r\nb=AS:' + (enhanceData.videoBitrate);
+// 						if (enhanceData.videoFrameRate !== undefined) {
+// 							sdpStrRet += '\r\na=framerate:' + enhanceData.videoFrameRate;
+// 						}
+// 					}
+// 					hitMID = true;
+// 				}
+// 				else if ('bandwidth'.localeCompare(sdpSection) == 0) {
+// 					var rtpmapID;
+// 					rtpmapID = getrtpMapID(sdpLine);
+// 					if (rtpmapID !== null) {
+// 						var match = rtpmapID[2].toLowerCase();
+// 						if (('vp9'.localeCompare(match) == 0) || ('vp8'.localeCompare(match) == 0) || ('h264'.localeCompare(match) == 0) ||
+// 							('red'.localeCompare(match) == 0) || ('ulpfec'.localeCompare(match) == 0) || ('rtx'.localeCompare(match) == 0)) {
+// 							if (enhanceData.videoBitrate !== undefined) {
+// 								sdpStrRet += '\r\na=fmtp:' + rtpmapID[1] + ' x-google-min-bitrate=' + (enhanceData.videoBitrate) + ';x-google-max-bitrate=' + (enhanceData.videoBitrate);
+// 							}
+// 						}
+
+// 						if (('opus'.localeCompare(match) == 0) || ('isac'.localeCompare(match) == 0) || ('g722'.localeCompare(match) == 0) || ('pcmu'.localeCompare(match) == 0) ||
+// 							('pcma'.localeCompare(match) == 0) || ('cn'.localeCompare(match) == 0)) {
+// 							if (enhanceData.audioBitrate !== undefined) {
+// 								sdpStrRet += '\r\na=fmtp:' + rtpmapID[1] + ' x-google-min-bitrate=' + (enhanceData.audioBitrate) + ';x-google-max-bitrate=' + (enhanceData.audioBitrate);
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 		sdpStrRet += '\r\n';
+// 	}
+// 	//console.log("Resuling SDP: " + sdpStrRet);
+// 	return sdpStrRet;
+// }
+
+
+// function deliverCheckLine(profile, type) {
+// 	var outputString = "";
+// 	for (var line in SDPOutput) {
+// 		var lineInUse = SDPOutput[line];
+// 		outputString += line;
+// 		if (lineInUse.includes(profile)) {
+// 			if (profile.includes("VP9") || profile.includes("VP8")) {
+// 				var output = "";
+// 				var outputs = lineInUse.split(/\r\n/);
+// 				for (var position in outputs) {
+// 					var transport = outputs[position];
+// 					if (transport.indexOf("transport-cc") !== -1 || transport.indexOf("goog-remb") !== -1 || transport.indexOf("nack") !== -1) {
+// 						continue;
+// 					}
+// 					output += transport;
+// 					output += "\r\n";
+// 				}
+
+// 				if (type.includes("audio")) {
+// 					audioIndex = line;
+// 				}
+
+// 				if (type.includes("video")) {
+// 					videoIndex = line;
+// 				}
+
+// 				return output;
+// 			}
+// 			if (type.includes("audio")) {
+// 				audioIndex = line;
+// 			}
+
+// 			if (type.includes("video")) {
+// 				videoIndex = line;
+// 			}
+// 			return lineInUse;
+// 		}
+// 	}
+// 	return outputString;
+// }
+
+// function checkLine(line) {
+// 	if (line.startsWith("a=rtpmap") || line.startsWith("a=rtcp-fb") || line.startsWith("a=fmtp")) {
+// 		var res = line.split(":");
+
+// 		if (res.length > 1) {
+// 			var number = res[1].split(" ");
+// 			if (!isNaN(number[0])) {
+// 				if (!number[1].startsWith("http") && !number[1].startsWith("ur")) {
+// 					var currentString = SDPOutput[number[0]];
+// 					if (!currentString) {
+// 						currentString = "";
+// 					}
+// 					currentString += line + "\r\n";
+// 					SDPOutput[number[0]] = currentString;
+// 					return false;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	return true;
+// }
+
+// function getrtpMapID(line) {
+// 	var findid = new RegExp('a=rtpmap:(\\d+) (\\w+)/(\\d+)');
+// 	var found = line.match(findid);
+// 	return (found && found.length >= 3) ? found : null;
+// }
 
 
 function errorHandler(error) {

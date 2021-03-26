@@ -51,11 +51,11 @@
         var localVideoRaw = document.querySelector('#localVideo');
 
         var userAgent = navigator.userAgent;
-        var wsURL = "wss://10.91.2.19:9000";
-        var videoBitrate = 3000000;
-        var audioBitrate = 64;
-        var videoFrameRate = 40;
-        var bufferTimeout = 2000;
+        var wsURL = "wss://localhost:9000";
+        var videoBitrate = 1000000;
+        var audioBitrate = 160;
+        var videoFrameRate = 30;
+        var bufferTimeout = 1000;
         var videoChoice = "42e01f";
         var audioChoice = "opus";
         
@@ -63,7 +63,7 @@
         $('#serverUrl').html('<a href="'+wsURLhttps+'/socket.io/" target="_blank">'+wsURLhttps+'/socket.io/<a>');
 
         jQuery(document).ready(function() {
-            setTimeout(browserReady(), bufferTimeout);
+            setTimeout(browserReady());
         });
 
         </script>

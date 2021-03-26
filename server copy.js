@@ -27,26 +27,7 @@ io.on('connection', function (client) {
   console.log('Target RTMP URL:', rtmpUrl);
   console.log('Checkout Live on URL:', "https://vimeo.com/event/795267");
  
-  // ffmpeg -f avfoundation -framerate 30 -pix_fmt uyvy422 -i "0" -s 1920x1080 -vcodec libx264 
-  // -preset:v ultrafast -tune:v zerolatency -flvflags no_duration_filesize  -framerate 30 -vf showinfo 
-  // -f flv rtmps://rtmp-global.cloud.vimeo.com:443/live/236536ce-0a7f-4e73-aed2-708620bbb8d3
   //code sample from https://github.com/fbsamples/Canvas-Streaming-Example/blob/master/server.js
-  // const ffmpeg = child_process.spawn('ffmpeg', [
-  //   '-f', 'avfoundation', '-i', 'anullsrc',
-  //   '-framerate', '30',
-  //   '-i', '-',
-  //   '-s', '1920x1080',
-  //   '-vcodec', 'libx264',
-  //   '-preset:v', 'ultrafast',
-  //   '-tune:v', 'zerolatency',
-  //   '-flvflags', 'no_duration_filesize',
-  //   '-framerate', '30',
-  //   '-vf', 'showinfo',
-  //   '-shortest',
-  //   '-acodec', 'aac',
-  //   '-f', 'flv',
-  //   rtmpUrl
-  // ]);
   const ffmpeg = child_process.spawn('ffmpeg', [
     // Facebook requires an audio track, so we create a silent one here.
     // Remove this line, as well as `-shortest`, if you send audio from the browser.
@@ -61,10 +42,9 @@ io.on('connection', function (client) {
     //try to reduce low latency (normally 30sec)
     //'-fflags', 'nobuffer', 
     //'-probesize', '32', 
-    // '-preset', 'ultrafast', 
-    // '-s', '1920x1080',
-    // '-tune', 'zerolatency', 
-    // '-threads', '1',
+    '-preset', 'ultrafast', 
+    //'-tune', 'zerolatency', 
+    //'-threads', '1',
     
     // Because we're using a generated audio source which never ends,
     // specify that we'll stop at end of other input.  Remove this line if you
@@ -77,25 +57,24 @@ io.on('connection', function (client) {
     // or similar to transcode it to H.264 here on the server.
     // '-c:v','libvpx-vp9',
     // '-c:a','libopus',
-    '-vcodec', 'copy',
-    // '-vcodec', 'libx264',
+    // '-vcodec', 'copy',
+    '-vcodec', 'libx264',
     
     // AAC audio is required for Facebook Live.  No browser currently supports
     // encoding AAC, so we must transcode the audio to AAC here on the server.
     '-acodec', 'aac',
 
     //added fix stdin send/receive
-    // '-b:v', '1.5M', '-maxrate', '1.5M', '-bufsize', '1M',
-    // '-g', '90',
-    // '-movflags', '+faststart',
-    // '-pix_fmt', 'yuv420p',
-    // '-force_key_frames', '2',
+    //'-b:v', '1.5M', '-maxrate', '1.5M', '-bufsize', '1M',
+    '-g', '90',
+    '-movflags', '+faststart',
+    '-pix_fmt', 'yuv420p',
+    '-force_key_frames', '2',
     //'-vf', 'yadif',
     //'-crf', '18', '-bf', '2',
     // '-r', '25', 
     
     // FLV is the container format used in conjunction with RTMP
-    // '-filter:v', 'fps=30',
     '-f', 'flv',
     
     // The output RTMP URL.
