@@ -11,7 +11,7 @@ const child_process = require('child_process');
 const port = 9000;
 
 const httpsServer = https.createServer(credentials, app).listen(port, () => {
-  console.log('Starting Socket.io Server on http://localhost:' + port);
+  console.log('Starting Socket.io Server on https://localhost:' + port);
 });
 
 const io = new WebSocketServer({
@@ -28,7 +28,8 @@ io.on('connection', function (client) {
     client.emit('server_status', 'user disconnected');
   });
 
-  const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/236536ce-0a7f-4e73-aed2-708620bbb8d3");
+  const rtmpUrl = decodeURIComponent("rtmp://rtmp-global.cloud.vimeo.com/live/d50d4250-0692-4c9b-be06-666826d6c1c3");
+  // const rtmpUrl = decodeURIComponent("rtmp://x.rtmp.youtube.com/live2/z52r-zurz-6u2g-m12g-90pa");
   console.log('Target RTMP URL:', rtmpUrl);
   console.log('Checkout Live on URL:', "https://vimeo.com/event/795267");
  
@@ -36,11 +37,14 @@ io.on('connection', function (client) {
   // -preset:v ultrafast -tune:v zerolatency -flvflags no_duration_filesize  -framerate 30 -vf showinfo 
   // -f flv rtmps://rtmp-global.cloud.vimeo.com:443/live/236536ce-0a7f-4e73-aed2-708620bbb8d3
   const ffmpeg = child_process.spawn('ffmpeg', [
-    '-f', 'lavfi', '-i', 'anullsrc',
+    '-f', 'lavfi', 
+    '-thread_queue_size', '4096',
+    '-i', 'anullsrc',
     '-i', '-',
     '-shortest',
     '-vcodec', 'copy',
     '-acodec', 'aac',
+    '-preset', 'fast',
     '-f', 'flv',
     rtmpUrl,
   ]);
