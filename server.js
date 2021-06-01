@@ -36,6 +36,30 @@ io.on('connection', function (client) {
   // ffmpeg -f avfoundation -framerate 30 -pix_fmt uyvy422 -i "0" -s 1920x1080 -vcodec libx264 
   // -preset:v ultrafast -tune:v zerolatency -flvflags no_duration_filesize  -framerate 30 -vf showinfo 
   // -f flv rtmps://rtmp-global.cloud.vimeo.com:443/live/236536ce-0a7f-4e73-aed2-708620bbb8d3
+
+  // ffmpeg -re -i pipe:0 -c:v libx264 -preset veryfast -maxrate 3000k 
+  // -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 -ar 44100 
+  // -f flv rtmp://rtmp-global.cloud.vimeo.com/live/d50d4250-0692-4c9b-be06-666826d6c1c3
+
+  // const ffmpeg = child_process.spawn('ffmpeg', [
+  //   '-re', 
+  //   '-f', 'lavfi', 
+  //   '-i', 'anullsrc',
+  //   '-i', '-',
+  //   '-c:v', 'libx264',
+  //   '-maxrate', '3000k',
+  //   '-bufsize', '6000k',
+  //   '-pix_fmt', 'yuv420p',
+  //   '-g', '50',
+  //   '-c:a', 'aac',
+  //   '-b:a', '160k',
+  //   '-ac', '2',
+  //   '-ar', '44100',
+  //   '-preset', 'veryfast',
+  //   '-f', 'flv',
+  //   rtmpUrl,
+  // ]);
+
   const ffmpeg = child_process.spawn('ffmpeg', [
     '-f', 'lavfi', 
     '-thread_queue_size', '4096',
@@ -43,8 +67,11 @@ io.on('connection', function (client) {
     '-i', '-',
     '-shortest',
     '-vcodec', 'copy',
+    '-maxrate', '3000k',
+    '-bufsize', '6000k',
     '-acodec', 'aac',
-    '-preset', 'fast',
+    '-b:a', '160k',
+    '-preset', 'veryfast',
     '-f', 'flv',
     rtmpUrl,
   ]);
